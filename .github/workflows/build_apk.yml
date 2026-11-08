@@ -12,6 +12,9 @@ jobs:
   build:
     name: Generar APK de Comedero Ratita
     runs-on: ubuntu-latest
+    env:
+      ANDROID_HOME: /usr/local/lib/android/sdk
+      ANDROID_SDK_ROOT: /usr/local/lib/android/sdk
 
     steps:
       - name: Descargar codigo fuente
@@ -26,6 +29,7 @@ jobs:
       - name: Preparar Entorno Android y Gradle
         run: |
           echo "sdk.dir=$ANDROID_HOME" > local.properties
+          echo "y" | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true
           echo "Descargando Gradle 8.2..."
           wget -q https://services.gradle.org/distributions/gradle-8.2-bin.zip
           unzip -q gradle-8.2-bin.zip -d /tmp/
@@ -33,11 +37,32 @@ jobs:
 
       - name: Compilar APK con Gradle
         run: |
-          /tmp/gradle-8.2/bin/gradle assembleDebug --stacktrace
+          /tmp/gradle-8.2/bin/gradle assembleDebug --stacktrace 2>&1 | tee build.log
           cp app/build/outputs/apk/debug/app-debug.apk Comedero-Ratita.apk
-          ls -la Comedero-Ratita.apk
+
+      - name: Guardar log si hay error
+        if: failure()
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git checkout -B error-log
+          tail -n 150 build.log > ERROR.txt || true
+          git add ERROR.txt
+          git commit -m "Registro de error en compilacion" || true
+          git push origin error-log -f || true
+
+      - name: Publicar APK en rama releases
+        if: success()
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git checkout -B releases
+          git add -f Comedero-Ratita.apk
+          git commit -m "APK Comedero Ratita compilado listo para descargar"
+          git push origin releases -f
 
       - name: Subir APK como Artefacto descargable
+        if: success()
         uses: actions/upload-artifact@v4
         with:
           name: Comedero-Ratita-APK
@@ -45,19 +70,18 @@ jobs:
           if-no-files-found: error
 
       - name: Publicar Release directa con APK
-        uses: softprops/action-gh-release@v2
         if: success()
+        uses: softprops/action-gh-release@v2
         with:
           tag_name: "v1.0"
           name: "Comedero Ratita APK - Descarga Directa"
           body: |
             ### 🐹 Aplicación Android para Comedero de Hámster
-            Descarga directamente el archivo **Comedero-Ratita.apk** en tu smartphone e instálalo.
+            Descarga directa de **Comedero-Ratita.apk** para tu smartphone Android.
             
-            **Funciones incluidas:**
-            - 📶 Escaneo y conexión de redes Wi-Fi guardadas en memoria Flash NVS del ESP32.
-            - 🕒 Sincronización del reloj RTC DS3231 (Horario de México UTC-6) con 1 clic.
-            - 🐾 Botón de alimentación manual instantánea.
-            - ⏱️ Configuración de intervalo y horarios fijos.
-            - 🔵 Conexión Bluetooth SPP ("Comedero-Ratita") y Wi-Fi HTTP.
+            **Novedades:**
+            - 🕒 Botón para sincronizar la hora exacta de México (UTC-6) con el reloj RTC DS3231 del comedero.
+            - 📶 Búsqueda y conexión a redes Wi-Fi guardadas en memoria Flash.
+            - 🐾 Alimentación manual remota por Bluetooth y Wi-Fi.
+            - ⏱️ Ajuste de temporizador de comida.
           files: Comedero-Ratita.apk
