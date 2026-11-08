@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#0F172A"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="🐹 Comedero Ratita"
+            android:textColor="#38BDF8"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_marginBottom="2dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Control Bluetooth y Configuración Wi-Fi"
+            android:textColor="#94A3B8"
+            android:textSize="13sp"
+            android:gravity="center"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- Tarjeta Bluetooth -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="#1E293B"
+            android:padding="14dp"
+            android:layout_marginBottom="14dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="📡 Conexión Bluetooth"
+                android:textColor="#F8FAFC"
+                android:textStyle="bold"
+                android:textSize="15sp"/>
+
+            <TextView
+                android:id="@+id/tvStatus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="● Desconectado (Dispositivo: Comedero-Ratita)"
+                android:textColor="#94A3B8"
+                android:textSize="12sp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="8dp"/>
+
+            <Button
+                android:id="@+id/btnConnectBt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Conectar Bluetooth (Comedero-Ratita)"
+                android:backgroundTint="#2563EB"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"/>
+
+            <EditText
+                android:id="@+id/etIp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="IP Wi-Fi (ej. 192.168.0.20)"
+                android:text="192.168.0.20"
+                android:textColor="#38BDF8"
+                android:textColorHint="#64748B"
+                android:background="#0F172A"
+                android:padding="8dp"
+                android:textSize="13sp"
+                android:layout_marginTop="8dp"/>
+        </LinearLayout>
+
+        <!-- Botón Gigante de Alimentar -->
+        <Button
+            android:id="@+id/btnFeed"
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:text="🐾 ALIMENTAR RATITA AHORA"
+            android:backgroundTint="#10B981"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="14dp"/>
+
+        <!-- Tarjeta de Configuración de Wi-Fi -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="#1E293B"
+            android:padding="14dp"
+            android:layout_marginBottom="14dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="📶 Configurar Acceso Wi-Fi (NVS)"
+                android:textColor="#F8FAFC"
+                android:textStyle="bold"
+                android:textSize="15sp"
+                android:layout_marginBottom="8dp"/>
+
+            <Button
+                android:id="@+id/btnScanWifi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="🔍 Buscar Redes Wi-Fi Disponibles"
+                android:backgroundTint="#8B5CF6"
+                android:textColor="#FFFFFF"
+                android:layout_marginBottom="8dp"/>
+
+            <Spinner
+                android:id="@+id/spWifiList"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:background="#0F172A"
+                android:layout_marginBottom="8dp"/>
+
+            <EditText
+                android:id="@+id/etWifiSsid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Nombre de la red Wi-Fi (SSID)"
+                android:textColor="#F8FAFC"
+                android:textColorHint="#64748B"
+                android:background="#0F172A"
+                android:padding="10dp"
+                android:textSize="13sp"
+                android:layout_marginBottom="8dp"/>
+
+            <EditText
+                android:id="@+id/etWifiPass"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Contraseña de la red"
+                android:inputType="textPassword"
+                android:textColor="#F8FAFC"
+                android:textColorHint="#64748B"
+                android:background="#0F172A"
+                android:padding="10dp"
+                android:textSize="13sp"
+                android:layout_marginBottom="10dp"/>
+
+            <Button
+                android:id="@+id/btnSaveWifi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="💾 Guardar Red y Conectar ESP32"
+                android:backgroundTint="#3B82F6"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"/>
+        </LinearLayout>
+
+        <!-- Tarjeta de Horarios -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="#1E293B"
+            android:padding="14dp"
+            android:layout_marginBottom="14dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="⏱️ Configurar Horario Automático"
+                android:textColor="#F8FAFC"
+                android:textStyle="bold"
+                android:textSize="15sp"
+                android:layout_marginBottom="8dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Dispensar cada (minutos):"
+                android:textColor="#CBD5E1"
+                android:textSize="12sp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="12dp">
+
+                <EditText
+                    android:id="@+id/etInterval"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:text="5"
+                    android:textColor="#38BDF8"
+                    android:background="#0F172A"
+                    android:padding="8dp"/>
+
+                <Button
+                    android:id="@+id/btnSaveInterval"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Guardar Minutos"
+                    android:backgroundTint="#3B82F6"
+                    android:layout_marginStart="8dp"/>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#334155"
+                android:layout_marginBottom="12dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="O configurar dos horarios diarios fijos (0 a 23h):"
+                android:textColor="#CBD5E1"
+                android:textSize="12sp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="10dp">
+
+                <EditText
+                    android:id="@+id/etH1"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:text="8"
+                    android:textColor="#38BDF8"
+                    android:background="#0F172A"
+                    android:padding="8dp"
+                    android:gravity="center"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=":00 y"
+                    android:textColor="#94A3B8"
+                    android:layout_marginHorizontal="6dp"/>
+
+                <EditText
+                    android:id="@+id/etH2"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:text="20"
+                    android:textColor="#38BDF8"
+                    android:background="#0F172A"
+                    android:padding="8dp"
+                    android:gravity="center"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=":00"
+                    android:textColor="#94A3B8"
+                    android:layout_marginStart="6dp"/>
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btnSaveHours"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Guardar Horas Fijas"
+                android:backgroundTint="#3B82F6"
+                android:textColor="#FFFFFF"/>
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>
