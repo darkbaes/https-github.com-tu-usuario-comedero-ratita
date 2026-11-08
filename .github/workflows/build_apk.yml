@@ -5,6 +5,9 @@ on:
     branches: [ "main", "master" ]
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build:
     name: Generar APK de Comedero Ratita
@@ -20,18 +23,41 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Configurar Gradle
-        uses: gradle/actions/setup-gradle@v3
+      - name: Preparar Entorno Android y Gradle
+        run: |
+          echo "sdk.dir=$ANDROID_HOME" > local.properties
+          echo "Descargando Gradle 8.2..."
+          wget -q https://services.gradle.org/distributions/gradle-8.2-bin.zip
+          unzip -q gradle-8.2-bin.zip -d /tmp/
+          chmod +x /tmp/gradle-8.2/bin/gradle
 
       - name: Compilar APK con Gradle
         run: |
-          gradle wrapper --gradle-version 8.2
-          chmod +x gradlew
-          ./gradlew assembleDebug --stacktrace
+          /tmp/gradle-8.2/bin/gradle assembleDebug --stacktrace
+          cp app/build/outputs/apk/debug/app-debug.apk Comedero-Ratita.apk
+          ls -la Comedero-Ratita.apk
 
       - name: Subir APK como Artefacto descargable
         uses: actions/upload-artifact@v4
         with:
           name: Comedero-Ratita-APK
-          path: app/build/outputs/apk/debug/app-debug.apk
+          path: Comedero-Ratita.apk
           if-no-files-found: error
+
+      - name: Publicar Release directa con APK
+        uses: softprops/action-gh-release@v2
+        if: success()
+        with:
+          tag_name: "v1.0"
+          name: "Comedero Ratita APK - Descarga Directa"
+          body: |
+            ### 🐹 Aplicación Android para Comedero de Hámster
+            Descarga directamente el archivo **Comedero-Ratita.apk** en tu smartphone e instálalo.
+            
+            **Funciones incluidas:**
+            - 📶 Escaneo y conexión de redes Wi-Fi guardadas en memoria Flash NVS del ESP32.
+            - 🕒 Sincronización del reloj RTC DS3231 (Horario de México UTC-6) con 1 clic.
+            - 🐾 Botón de alimentación manual instantánea.
+            - ⏱️ Configuración de intervalo y horarios fijos.
+            - 🔵 Conexión Bluetooth SPP ("Comedero-Ratita") y Wi-Fi HTTP.
+          files: Comedero-Ratita.apk

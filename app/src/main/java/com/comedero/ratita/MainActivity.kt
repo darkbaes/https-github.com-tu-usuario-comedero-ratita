@@ -41,6 +41,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var etH2: EditText
     private lateinit var btnSaveHours: Button
     private lateinit var btnConnectBt: Button
+    private lateinit var btnSyncTime: Button
 
     private lateinit var btnScanWifi: Button
     private lateinit var spWifiList: Spinner
@@ -64,6 +65,7 @@ class MainActivity : AppCompatActivity() {
         etH2 = findViewById(R.id.etH2)
         btnSaveHours = findViewById(R.id.btnSaveHours)
         btnConnectBt = findViewById(R.id.btnConnectBt)
+        btnSyncTime = findViewById(R.id.btnSyncTime)
 
         btnScanWifi = findViewById(R.id.btnScanWifi)
         spWifiList = findViewById(R.id.spWifiList)
@@ -109,6 +111,20 @@ class MainActivity : AppCompatActivity() {
                 sendCommand("HORAS:$h1,$h2", "/config?h1=$h1&h2=$h2")
                 Toast.makeText(this, "Guardando horarios ($h1:00 y $h2:00)...", Toast.LENGTH_SHORT).show()
             }
+        }
+
+        btnSyncTime.setOnClickListener {
+            val cal = Calendar.getInstance()
+            val y = cal.get(Calendar.YEAR)
+            val m = cal.get(Calendar.MONTH) + 1
+            val d = cal.get(Calendar.DAY_OF_MONTH)
+            val h = cal.get(Calendar.HOUR_OF_DAY)
+            val min = cal.get(Calendar.MINUTE)
+            val s = cal.get(Calendar.SECOND)
+            val btCmd = "SET_TIME:$y,$m,$d,$h,$min,$s"
+            val webPath = "/set_time?y=$y&m=$m&d=$d&h=$h&min=$min&s=$s"
+            sendCommand(btCmd, webPath)
+            Toast.makeText(this, "Sincronizando reloj RTC con este dispositivo...", Toast.LENGTH_SHORT).show()
         }
 
         btnScanWifi.setOnClickListener {
